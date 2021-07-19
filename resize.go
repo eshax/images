@@ -2,6 +2,8 @@ package images
 
 import (
 	"log"
+	"os"
+	"path"
 
 	"github.com/disintegration/imaging"
 )
@@ -9,15 +11,22 @@ import (
 /*
 等比例调整图片大小, 原路径替换文件
 	in:
-		filepath: 图片文件路径, 包含文件名
-		   scale: 缩放比例 (正数放大, 负数缩小)
+		source_path: 源文件路径
+		target_path: 目标文件路径
+		scale: 缩放比例 (正数放大, 负数缩小)
 	out:
 		err
 	example:
-		images.Resize("image/a.jpg",   2) // 放大一倍
-		images.Resize("image/a.jpg", 0.5) // 缩小一倍
+		images.Resize("image/0/a.jpg", "image/1/b.jpg",   2) // 放大一倍
+		images.Resize("image/0/a.jpg", "image/1/b.jpg", 0.5) // 缩小一倍
 */
-func Resize(filepath string, scale float64) error {
+func Resize(source_path, target_path string, scale float64) error {
+
+	target_dir := path.Dir(target_path)
+
+	if err := os.MkdirAll(target_dir, 0755); err != nil {
+		return err
+	}
 
 	// 缩放比例不能是 0
 	if scale == 0 {
@@ -25,13 +34,13 @@ func Resize(filepath string, scale float64) error {
 	}
 
 	// 原图的尺寸
-	width, height, err := Info(filepath)
+	width, height, err := Info(source_path)
 	if err != nil {
 		return err
 	}
 
 	// 加载图像文件
-	img, err := imaging.Open(filepath)
+	img, err := imaging.Open(source_path)
 	if err != nil {
 		log.Println(err.Error())
 		return err
@@ -49,7 +58,7 @@ func Resize(filepath string, scale float64) error {
 	}
 
 	img = imaging.Resize(img, width, height, imaging.Lanczos)
-	err = imaging.Save(img, filepath)
+	err = imaging.Save(img, target_path)
 	if err != nil {
 		return err
 	}

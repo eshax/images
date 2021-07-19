@@ -15,7 +15,7 @@ func TestInfo(t *testing.T) {
 }
 
 func TestResize(t *testing.T) {
-	if err := Resize("dist/0_0.jpg", 2); err != nil {
+	if err := Resize("dist/0_0.jpg", "dist/0_0/a/b/0_0.jpg", 0.5); err != nil {
 		t.Error(err)
 	}
 }
