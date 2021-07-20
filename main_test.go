@@ -19,3 +19,17 @@ func TestResize(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestResizeImage(t *testing.T) {
+
+	img, err := Load("dist/0_0.jpg")
+	if err != nil {
+		t.Error(err)
+	}
+
+	img = ResizeImage(img, 0.5)
+
+	if err := Save("dist/0.jpg", img); err != nil {
+		t.Error(err)
+	}
+}

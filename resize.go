@@ -1,6 +1,7 @@
 package images
 
 import (
+	"image"
 	"log"
 	"os"
 	"path"
@@ -64,4 +65,27 @@ func Resize(source_path, target_path string, scale float64) error {
 	}
 
 	return nil
+}
+
+/*
+重置图像大小
+	params:
+		source: image.Image (输入图像)
+		scale:  缩放比例 (>1 放大) (<1 缩小)
+	returns:
+		target: image.Image (输出图像)
+*/
+func ResizeImage(source image.Image, scale float64) (target image.Image) {
+
+	if scale <= 0 || scale == 1 {
+		return source
+	}
+
+	width := source.Bounds().Max.X
+	height := source.Bounds().Max.Y
+
+	width = int(float64(width) * scale)
+	height = int(float64(height) * scale)
+
+	return imaging.Resize(source, width, height, imaging.Lanczos)
 }
