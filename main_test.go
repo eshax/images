@@ -33,3 +33,7 @@ func TestResizeImage(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func Test_Max(t *testing.T) {
+	log.Println(Max(19458, 19594))
+}
