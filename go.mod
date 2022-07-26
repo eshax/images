@@ -1,4 +1,4 @@
-module gitee.com/eshax/images
+module github.com/eshax/images
 
 go 1.16
 
